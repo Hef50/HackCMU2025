@@ -43,8 +43,8 @@ By leveraging social commitment, the app helps boost gym attendance and success 
 
 ## 📦 Installation
 
-1. **Clone the repo**
-   git clone https://github.com/darrenpintoo/HackCMU2025.git
+1. **Clone the repo**  
+   git clone https://github.com/darrenpintoo/HackCMU2025.git  
    cd GroupGainz
 
 2. **Install dependencies**
