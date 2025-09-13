@@ -7,7 +7,9 @@
 ---
 
 ## 📖 Project Summary
-**GroupGainz** is a mobile application designed to tackle fitness motivation and accountability. It connects users with similar health and fitness goals into groups that commit to a shared workout agreement.  
+**GroupGainz** is a mobile application designed to tackle fitness motivation and accountability. It connects users with similar health and fitness goals into groups that commit to a shared workout agreement.   
+
+👉 [View the Slideshow Presentation](https://docs.google.com/presentation/d/1m9ialDPlzlqE6PxDaARq3vHMQRW9aBL9IEKlYu6PRTU/edit?slide=id.g348ec9e42d6_0_1653#slide=id.g348ec9e42d6_0_1653)  
 
 At the core is a system of **peer accountability**, where users encourage each other to stay consistent. To add extra motivation, the platform offers an **optional financial wagering system**, letting users bet on their ability to stick to the plan.  
 
@@ -43,8 +45,8 @@ By leveraging social commitment, the app helps boost gym attendance and success 
 
 ## 📦 Installation
 
-1. **Clone the repo**
-   git clone https://github.com/yourusername/GroupGainz.git
+1. **Clone the repo**  
+   git clone https://github.com/darrenpintoo/HackCMU2025.git  
    cd GroupGainz
 
 2. **Install dependencies**
