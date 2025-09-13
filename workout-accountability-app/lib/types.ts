@@ -55,6 +55,7 @@ export interface Group {
 
 export type ContractStatus = 'Pending' | 'Active' | 'Paused';
 export type CheckInStatus = 'OnTime' | 'Late' | 'Missed';
+export type PunishmentType = 'monetary' | 'challenge' | 'social' | 'service' | 'diet';
 
 export interface Contract {
   id: string;
@@ -65,6 +66,24 @@ export interface Contract {
   };
   location_name: string;
   rules?: string;
+  status: ContractStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AccountabilityContract {
+  id: string;
+  name: string;
+  description?: string;
+  group_id: string;
+  frequency: number;
+  timeOfDay: 'Morning' | 'Afternoon' | 'Evening';
+  daysOfWeek: number[];
+  punishmentType: PunishmentType;
+  punishmentAmount: string;
+  punishmentDescription?: string;
+  contractDuration: number; // weeks
+  stakeAmount: number;
   status: ContractStatus;
   created_at: string;
   updated_at: string;
