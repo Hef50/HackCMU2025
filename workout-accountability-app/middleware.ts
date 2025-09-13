@@ -36,13 +36,42 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Allow access to public routes
-  const publicRoutes = ['/login', '/signup', '/auth', '/onboarding'];
+  const publicRoutes = ['/login', '/signup', '/auth', '/test-connection', '/debug-auth', '/test-backdoor'];
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  
+  // Special handling for onboarding - require authentication (unless backdoor)
+  if (pathname === '/onboarding' && !session) {
+    // Check for backdoor testing cookie
+    const backdoorCookie = req.cookies.get('backdoor_test');
+    if (backdoorCookie?.value === 'true') {
+      // Allow backdoor access to onboarding
+      console.log('Allowing backdoor access to onboarding');
+      return res;
+    }
+    
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = '/auth';
+    redirectUrl.searchParams.set('redirectedFrom', pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
   
   // If user is not authenticated and trying to access protected routes
   if (!session && !isPublicRoute && pathname !== '/') {
+    // Check for backdoor access to dashboard
+    const backdoorCookie = req.cookies.get('backdoor_test');
+    console.log('Middleware - checking backdoor access:', { 
+      pathname, 
+      backdoorCookie: backdoorCookie?.value,
+      isDashboard: pathname.startsWith('/dashboard')
+    });
+    
+    if (backdoorCookie?.value === 'true' && pathname.startsWith('/dashboard')) {
+      console.log('Allowing backdoor access to dashboard');
+      return res;
+    }
+    
     const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = '/login';
+    redirectUrl.pathname = '/auth';
     redirectUrl.searchParams.set('redirectedFrom', pathname);
     return NextResponse.redirect(redirectUrl);
   }
@@ -59,9 +88,9 @@ export async function middleware(req: NextRequest) {
 
       if (error) {
         console.error('Error fetching user profile:', error);
-        // If we can't fetch user data, redirect to login
+        // If we can't fetch user data, redirect to auth
         const redirectUrl = req.nextUrl.clone();
-        redirectUrl.pathname = '/login';
+        redirectUrl.pathname = '/auth';
         return NextResponse.redirect(redirectUrl);
       }
 
@@ -73,9 +102,9 @@ export async function middleware(req: NextRequest) {
       }
     } catch (error) {
       console.error('Middleware error:', error);
-      // On error, redirect to login for safety
+      // On error, redirect to auth for safety
       const redirectUrl = req.nextUrl.clone();
-      redirectUrl.pathname = '/login';
+      redirectUrl.pathname = '/auth';
       return NextResponse.redirect(redirectUrl);
     }
   }

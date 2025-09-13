@@ -13,34 +13,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AccountaBuddy",
-  description: "Your personal fitness accountability companion",
+  title: "GroupGainz",
+  description: "Transform your fitness journey through group accountability and motivation",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "AccountaBuddy",
+    title: "GroupGainz",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
-    siteName: "AccountaBuddy",
-    title: "AccountaBuddy",
-    description: "Your personal fitness accountability companion",
+    siteName: "GroupGainz",
+    title: "GroupGainz",
+    description: "Transform your fitness journey through group accountability and motivation",
   },
   twitter: {
     card: "summary",
-    title: "AccountaBuddy",
-    description: "Your personal fitness accountability companion",
+    title: "GroupGainz",
+    description: "Transform your fitness journey through group accountability and motivation",
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#FFFFFF",
+  themeColor: "#2563EB",
 };
 
 export default function RootLayout({

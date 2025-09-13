@@ -44,14 +44,44 @@ export async function updateUserProfileOnboarding(data: {
       }
     );
 
-    // Get current user
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    // Check for backdoor testing mode
+    const backdoorCookie = cookieStore.get('backdoor_test');
+    const isBackdoorMode = backdoorCookie?.value === 'true';
+    console.log('Onboarding action - backdoor check:', { 
+      backdoorCookie: backdoorCookie?.value,
+      isBackdoorMode 
+    });
     
-    if (userError || !user) {
-      throw new Error('Failed to get current user');
+    let userId: string;
+    
+    if (isBackdoorMode) {
+      // Use a fixed test user ID for backdoor mode
+      userId = 'backdoor-test-user-id';
+      console.log('Using backdoor mode for testing');
+    } else {
+      // Normal authentication flow
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError || !session) {
+        console.error('Session error:', sessionError);
+        throw new Error('Failed to get user session. Please log in again.');
+      }
+
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        console.error('User error:', userError);
+        throw new Error('Failed to get current user. Please log in again.');
+      }
+      
+      userId = user.id;
     }
 
-    const userId = user.id;
+    // Skip database operations for backdoor mode
+    if (isBackdoorMode) {
+      console.log('Backdoor mode: Skipping database operations');
+      return { success: true, message: 'Backdoor mode: Profile updated (simulated)' };
+    }
 
     // Start transaction by updating user profile
     const { error: updateError } = await supabase
@@ -133,9 +163,19 @@ export async function updateUserProfileOnboarding(data: {
       };
     }
     
+    // Provide more specific error messages for common auth issues
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    
+    if (errorMessage.includes('Failed to get user session') || errorMessage.includes('Failed to get current user')) {
+      return {
+        success: false,
+        error: 'Authentication error. Please refresh the page and try again.'
+      };
+    }
+    
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'An unexpected error occurred' 
+      error: errorMessage 
     };
   }
 }

@@ -123,6 +123,7 @@ export default function OnboardingPage() {
         setError(result.error || 'Failed to save your profile. Please try again.');
       }
     } catch (err) {
+      console.error('Client-side onboarding error:', err);
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);

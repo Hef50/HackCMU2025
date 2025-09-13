@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -41,10 +43,16 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Status */}
-        <div className="mt-16 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-yellow-800">
-            🚧 <strong>Setup Required:</strong> Configure Supabase authentication to enable full functionality
+        {/* CTA Section */}
+        <div className="mt-16 text-center">
+          <Link 
+            href="/auth"
+            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+          >
+            Get Started Today
+          </Link>
+          <p className="mt-4 text-gray-600">
+            Join thousands of users achieving their fitness goals together
           </p>
         </div>
       </div>

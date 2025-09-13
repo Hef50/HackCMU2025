@@ -486,7 +486,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Create trigger to automatically create user profile
+-- Drop existing trigger if it exists, then create new one
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
@@ -500,31 +501,40 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create triggers for updated_at columns
+-- Create triggers for updated_at columns (drop existing first)
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_goals_updated_at ON goals;
 CREATE TRIGGER update_goals_updated_at BEFORE UPDATE ON goals
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_groups_updated_at ON groups;
 CREATE TRIGGER update_groups_updated_at BEFORE UPDATE ON groups
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_contracts_updated_at ON contracts;
 CREATE TRIGGER update_contracts_updated_at BEFORE UPDATE ON contracts
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_workout_instances_updated_at ON workout_instances;
 CREATE TRIGGER update_workout_instances_updated_at BEFORE UPDATE ON workout_instances
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_reports_updated_at ON reports;
 CREATE TRIGGER update_reports_updated_at BEFORE UPDATE ON reports
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_join_requests_updated_at ON join_requests;
 CREATE TRIGGER update_join_requests_updated_at BEFORE UPDATE ON join_requests
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_group_events_updated_at ON group_events;
 CREATE TRIGGER update_group_events_updated_at BEFORE UPDATE ON group_events
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_event_rsvps_updated_at ON event_rsvps;
 CREATE TRIGGER update_event_rsvps_updated_at BEFORE UPDATE ON event_rsvps
     FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column();
 
